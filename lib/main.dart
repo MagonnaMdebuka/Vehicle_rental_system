@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:vehicle_rental/login_page.dart';
-import 'package:vehicle_rental/vehicles_page.dart';
 
+import 'screens/login_page.dart';
+import 'screens/register_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: LoginPage(),
-      routes: {'/vehicles': (context) => const VehiclesPage(),},
+      title: 'Vehicle Rental',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorSchemeSeed: Colors.blueAccent,
+        useMaterial3: true,
+      ),
+      initialRoute: '/login',
+      routes: {
+        '/login': (_) => const LoginPage(),
+        '/register': (_) => const RegisterPage(),
+      },
     );
   }
 }
