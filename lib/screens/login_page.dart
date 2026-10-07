@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../services/api_service.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -12,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -19,14 +23,36 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('.Loading'),
-      ),
+    setState(() => _isLoading = true);
+
+    final result = await ApiService.login(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
     );
+
+    setState(() => _isLoading = false);
+
+    if (!mounted) return;
+
+    if (result['success'] == true) {
+      final data = result['data'] as Map<String, dynamic>;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Welcome, ${data['fullName']}!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message'] as String),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -94,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: _isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blueAccent,
                       padding: const EdgeInsets.all(14),
@@ -102,10 +128,19 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
+                    child: _isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            'Login',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                   ),
                 ),
                 const SizedBox(height: 16),
