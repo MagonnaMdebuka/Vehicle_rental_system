@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vehicle_rental/login_page.dart';
+import 'package:vehicle_rental/vehicles_page.dart';
 
 
 void main() {
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: LoginPage(),
+      routes: {'/vehicles': (context) => const VehiclesPage(),},
       debugShowCheckedModeBanner: false,
     );
   }
