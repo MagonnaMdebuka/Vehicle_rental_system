@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/login_page.dart';
 import 'screens/register_page.dart';
+import 'screens/vehicles_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/login': (_) => const LoginPage(),
         '/register': (_) => const RegisterPage(),
+        '/vehicles': (_) => const VehiclesPage(),
       },
     );
   }

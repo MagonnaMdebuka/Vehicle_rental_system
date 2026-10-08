@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/api_result.dart';
+import '../models/user.dart';
 import '../services/api_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -35,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = true);
 
-    final result = await ApiService.register(
+    final ApiResult<User> result = await ApiService.register(
       fullName: _fullNameController.text.trim(),
       email: _emailController.text.trim(),
       phone: _phoneController.text.trim(),
@@ -46,10 +48,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (!mounted) return;
 
-    if (result['success'] == true) {
+    if (result.success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Registration successful! Please log in.'),
+        SnackBar(
+          content: Text('Welcome, ${result.data!.fullName}! Please log in.'),
           backgroundColor: Colors.green,
         ),
       );
@@ -57,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(result['message'] as String),
+          content: Text(result.error!),
           backgroundColor: Colors.red,
         ),
       );
