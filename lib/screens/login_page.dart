@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/api_result.dart';
+import '../models/user.dart';
 import '../services/api_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -28,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
     setState(() => _isLoading = true);
 
-    final result = await ApiService.login(
+    final ApiResult<User> result = await ApiService.login(
       email: _emailController.text.trim(),
       password: _passwordController.text,
     );
@@ -37,18 +39,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (!mounted) return;
 
-    if (result['success'] == true) {
-      final data = result['data'] as Map<String, dynamic>;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Welcome, ${data['fullName']}!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+    if (result.success) {
+      Navigator.pushReplacementNamed(context, '/vehicles');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(result['message'] as String),
+          content: Text(result.error!),
           backgroundColor: Colors.red,
         ),
       );

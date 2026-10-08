@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vehicle_rental/screens/vehicles_page.dart'; 
+
+import '../models/vehicle.dart';
 
 class RentScreen extends StatefulWidget {
   final Vehicle vehicle;
   const RentScreen({super.key, required this.vehicle});
+
   @override
   State<RentScreen> createState() => _RentScreenState();
 }
@@ -24,15 +26,12 @@ class _RentScreenState extends State<RentScreen> {
   int get days {
     final range = chosenRange!;
     final d = range.end.difference(range.start).inDays;
-    return d < 1 ? 1 : d; // same-day pick counts as 1 day for now
+    return d < 1 ? 1 : d;
   }
 
-  // API wants YYYY-MM-DD
   String fmt(DateTime d) => d.toIso8601String().substring(0, 10);
 
   void confirm() {
-    final range = chosenRange!;
-    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Rental requested')),
     );
