@@ -16,7 +16,7 @@ class ApiService {
     return 'http://localhost:8080';
   }
 
-  // ── Auth credentials ──────────────────────────────────────────────
+  //  Auth credentials 
   // Stored after a successful login so authenticated endpoints can
   // send HTTP Basic auth headers with every request.
 
@@ -36,7 +36,7 @@ class ApiService {
     currentUser = null;
   }
 
-  // ── Auth endpoints ────────────────────────────────────────────────
+  //  Auth endpoints 
 
   static Future<ApiResult<User>> register({
     required String fullName,
@@ -110,7 +110,7 @@ class ApiService {
     }
   }
 
-  // ── Vehicle endpoints ─────────────────────────────────────────────
+  // Vehicle endpoints 
 
   /// Fetches all vehicles from the backend.
   /// TODO: Backend team needs to add GET /api/vehicles endpoint.
@@ -141,7 +141,7 @@ class ApiService {
     }
   }
 
-  // ── Rental endpoints ──────────────────────────────────────────────
+  //  Rental endpoints 
 
   static Future<ApiResult<Rental>> rent({
     required int vehicleId,
